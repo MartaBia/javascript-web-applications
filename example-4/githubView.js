@@ -22,10 +22,10 @@ class GithubView {
     const data = this.model.getRepoInfo();
 
     const repoName = document.querySelector('#repo-name');
-    const repoDescription = document.querySelector('#repo-description');
-    const repoImg = document.querySelector('#repo-image');
     repoName.textContent = data.full_name;
+    const repoDescription = document.querySelector('#repo-description');
     repoDescription.textContent = data.description;
+    const repoImg = document.querySelector('#repo-image');
     repoImg.src = data.organization.avatar_url;
   }
 }
