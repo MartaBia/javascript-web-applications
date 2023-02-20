@@ -1,12 +1,31 @@
 class NotesClient {
-  async loadNotes() {
-    const apiUrl = 'http://localhost:3000';
+  async loadNotes(onSuccess, onError) {
+    const apiUrl = "http://localhost:3000";
 
-    const fetchResult = await fetch(`${apiUrl}/notes`)
-    const jsonResult = await fetchResult.json();
+    fetch(`${apiUrl}/notes`)
+      .then((result) => {
+        if (!result.ok) {
+          throw new Error("Response was not OK");
+        }
+      })
+      .then((data) => onSuccess(data))
+      .catch((error) => onError());
+  }
+
+  async createNote(note) {
+    const apiUrl = "http://localhost:3000";
+
+    const fetchResult = await fetch(`${apiUrl}/notes`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ note }),
+    });
+    const jsonResult = await fetchResult.json;
     return jsonResult;
-  };
-};
+  }
+}
 
 // Commented for test
 // const client = new NotesClient();
@@ -26,16 +45,16 @@ module.exports = NotesClient;
 //   }
 
 //   createNote(note){
-//     fetch('http://localhost:3000/notes', {
-//       method: 'POST',
-//       headers: {
-//         'Content-Type': 'application/json',
-//       },
-//       body: JSON.stringify({data: note})
-//     })
-//     .then((response) => response.json())
-//     .then((data) => {
-//       console.log(note);
-//     });
+// fetch('http://localhost:3000/notes', {
+//   method: 'POST',
+//   headers: {
+//     'Content-Type': 'application/json',
+//   },
+//   body: JSON.stringify({data: note})
+// })
+// .then((response) => response.json())
+// .then((data) => {
+//   console.log(note);
+// });
 //   }
 // }

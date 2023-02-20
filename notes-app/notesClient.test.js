@@ -10,9 +10,28 @@ describe('NotesClient', () => {
       [ 'This note is coming from the server' ]
     ));
 
-    const notes = await client.loadNotes();
-    expect(notes).toEqual([ 'This note is coming from the server' ])
+    await client.loadNotes((notes) => 
+      expect(notes).toEqual([ 'This note is coming from the server' ])
+    );
   });
+
+  it("creates a new note with POST route", async () => {
+    fetch.mockResponseOnce(JSON.stringify(
+        [ "buy milk", "go to the gym" ]
+      ));
+    const note = 'a test note';
+    await notesClient.createNote(note);
+
+    expect(fetch).toHaveBeenCalledWith('http://localhost:3000/notes', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({note})
+    });
+  });
+
+  
 });
   // Done with Michal: 
   // it("fetches and loads data", () => {
